@@ -1,0 +1,11 @@
+sudo: required
+language: bash
+services:
+  - docker
+before_install:
+    - docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+script:
+    - docker build --build-arg ARCH=armhf --no-cache -t mfilipe/znc:armhf .
+    - docker build --build-arg ARCH=arm64 --no-cache -t mfilipe/znc:arm64 .
+    - docker push mfilipe/znc
